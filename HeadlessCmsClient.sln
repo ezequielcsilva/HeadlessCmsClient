@@ -3,9 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FCC96929-E687-4385-8C67-A603C7CA21BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeadlessCmsClient.Core", "src\HeadlessCmsClient.Core\HeadlessCmsClient.Core.csproj", "{C47987C3-CB5D-4375-BC20-AEE91E3ABE7D}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C47987C3-CB5D-4375-BC20-AEE91E3ABE7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47987C3-CB5D-4375-BC20-AEE91E3ABE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47987C3-CB5D-4375-BC20-AEE91E3ABE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47987C3-CB5D-4375-BC20-AEE91E3ABE7D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C47987C3-CB5D-4375-BC20-AEE91E3ABE7D} = {FCC96929-E687-4385-8C67-A603C7CA21BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52260466-0518-4FE5-9F3B-E7D77A98983F}
