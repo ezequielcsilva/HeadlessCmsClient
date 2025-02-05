@@ -3,5 +3,5 @@
 public class TokenResponse
 {
     public string BearerToken { get; set; } = string.Empty;
-    public int ExpiryDate { get; set; }
+    public long ExpiryDate { get; set; }
 }

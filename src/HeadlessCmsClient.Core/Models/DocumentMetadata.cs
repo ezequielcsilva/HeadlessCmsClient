@@ -2,8 +2,8 @@
 
 public class DocumentMetadata
 {
-    public string Id { get; set; } = string.Empty;
+    public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
-    public int PublishDate { get; set; }
-    public int ExpiryDate { get; set; }
+    public long PublishDate { get; set; }
+    public long ExpiryDate { get; set; }
 }

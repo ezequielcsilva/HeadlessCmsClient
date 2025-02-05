@@ -1,6 +1,12 @@
-﻿namespace HeadlessCmsClient.Core.Interfaces;
+﻿using HeadlessCmsClient.Core.Models;
+
+namespace HeadlessCmsClient.Core.Interfaces;
 
 public interface ITokenProvider
 {
-    Task<string> GetTokenAsync(CancellationToken cancellationToken);
+    Task<TokenResponse?> GetTokenAsync(AuthRequest request, CancellationToken cancellationToken);
+
+    Task<TokenResponse?> RefreshTokenAsync(TokenResponse lastTokenResponse, CancellationToken cancellationToken);
+
+    bool IsTokenExpired(TokenResponse tokenResponse);
 }
