@@ -35,7 +35,7 @@ internal sealed class TokenProvider : ITokenProvider
 
     public async Task<TokenResponse?> RefreshTokenAsync(CancellationToken cancellationToken)
     {
-        if (_tokenResponse == null)
+        if (_tokenResponse is null || string.IsNullOrEmpty(_tokenResponse.BearerToken) )
             throw new InvalidOperationException("No token to refresh.");
 
         var request = new HttpRequestMessage(HttpMethod.Get, ApiRoutes.RefreshAuth);

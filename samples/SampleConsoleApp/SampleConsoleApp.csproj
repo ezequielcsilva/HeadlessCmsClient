@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+		<PackageReference Include="WireMock.Net" Version="1.7.1" />
 	</ItemGroup>
 
 	<ItemGroup>
