@@ -7,14 +7,14 @@ using System.Net;
 
 namespace HeadlessCmsClient.Tests;
 
-public class AuthHandlerTests
+public class AuthHandlerTest
 {
     private readonly Mock<ITokenProvider> _tokenProviderMock;
     private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock;
     private readonly AuthRequest _authRequest;
     private readonly HttpClient _httpClient;
 
-    public AuthHandlerTests()
+    public AuthHandlerTest()
     {
         _tokenProviderMock = new Mock<ITokenProvider>();
         _httpMessageHandlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);

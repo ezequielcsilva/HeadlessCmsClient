@@ -1,6 +1,7 @@
 ﻿using HeadlessCmsClient.Core.Constants;
 using HeadlessCmsClient.Core.Interfaces;
 using HeadlessCmsClient.Core.Models;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -29,7 +30,12 @@ internal sealed class CmsClient : ICmsClient
     public async Task<Document?> GetDocumentAsync(Guid documentId, CancellationToken cancellationToken)
     {
         var response = await _httpClient.GetAsync(string.Format(ApiRoutes.GetDocument, documentId), cancellationToken);
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+            return null;
+
         response.EnsureSuccessStatusCode();
+
         return JsonSerializer.Deserialize<Document>(await response.Content.ReadAsStringAsync(cancellationToken));
     }
 
