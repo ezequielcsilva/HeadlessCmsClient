@@ -6,7 +6,7 @@ public interface ITokenProvider
 {
     Task<TokenResponse?> GetTokenAsync(AuthRequest request, CancellationToken cancellationToken);
 
-    Task<TokenResponse?> RefreshTokenAsync(TokenResponse lastTokenResponse, CancellationToken cancellationToken);
+    Task<TokenResponse?> RefreshTokenAsync(CancellationToken cancellationToken);
 
-    bool IsTokenExpired(TokenResponse tokenResponse);
+    bool IsTokenExpired();
 }

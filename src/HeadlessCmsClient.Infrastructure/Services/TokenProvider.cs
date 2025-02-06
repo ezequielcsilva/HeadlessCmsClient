@@ -7,38 +7,51 @@ using System.Text.Json;
 
 namespace HeadlessCmsClient.Infrastructure.Services;
 
-internal sealed class TokenProvider(HttpClient httpClient) : ITokenProvider
+internal sealed class TokenProvider : ITokenProvider
 {
+    private readonly HttpClient _httpClient;
+    private TokenResponse? _tokenResponse;
+
+    public TokenProvider(HttpClient httpClient)
+    {
+        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+    }
+
     public async Task<TokenResponse?> GetTokenAsync(AuthRequest request, CancellationToken cancellationToken)
     {
+        if (_tokenResponse is not null && !IsTokenExpired())
+            return _tokenResponse;
+
         var requestBody = JsonSerializer.Serialize(request);
         var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
-        var response = await httpClient.PostAsync(ApiRoutes.Auth, content, cancellationToken);
+        var response = await _httpClient.PostAsync(ApiRoutes.Auth, content, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         var data = await response.Content.ReadAsStringAsync(cancellationToken);
-        var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(data);
-
-        return tokenResponse;
+        _tokenResponse = JsonSerializer.Deserialize<TokenResponse>(data);
+        return _tokenResponse;
     }
 
-    public async Task<TokenResponse?> RefreshTokenAsync(TokenResponse lastTokenResponse, CancellationToken cancellationToken)
+    public async Task<TokenResponse?> RefreshTokenAsync(CancellationToken cancellationToken)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, ApiRoutes.RefreshAuth);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", lastTokenResponse.BearerToken);
+        if (_tokenResponse == null)
+            throw new InvalidOperationException("No token to refresh.");
 
-        var response = await httpClient.SendAsync(request, cancellationToken);
+        var request = new HttpRequestMessage(HttpMethod.Get, ApiRoutes.RefreshAuth);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenResponse.BearerToken);
+
+        var response = await _httpClient.SendAsync(request, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-        var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseBody);
+        _tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseBody);
 
-        return tokenResponse;
+        return _tokenResponse;
     }
 
-    public bool IsTokenExpired(TokenResponse tokenResponse)
+    public bool IsTokenExpired()
     {
-        return string.IsNullOrEmpty(tokenResponse.BearerToken) || tokenResponse.ExpiryDate <= DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        return string.IsNullOrEmpty(_tokenResponse?.BearerToken) || _tokenResponse.ExpiryDate <= DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 }
